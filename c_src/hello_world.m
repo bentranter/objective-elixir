@@ -9,14 +9,14 @@ void* SharedApplication(void) {
 
 void Run(void *app) {
 	@autoreleasepool {
-		NSApplication* a = (NSApplication*)app;
+		NSApplication *a = (NSApplication*)app;
 		[a setActivationPolicy:NSApplicationActivationPolicyRegular];
 		[a run];
 	}
 }
 
 void *NewWindow(int x, int y, int width, int height) {
-	NSWindow* window = [[NSWindow alloc] initWithContentRect:NSMakeRect(x, y, width, height)
+	NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(x, y, width, height)
 		styleMask:NSTitledWindowMask
 		backing:NSBackingStoreBuffered defer:NO];
 	return window;
@@ -31,9 +31,13 @@ void SetTitle(void *self, char *title) {
 	NSWindow *window = self;
 	NSString *nsTitle = [NSString stringWithUTF8String:title];
 	[window setTitle:nsTitle];
-	free(title);
 }
 
 int main(int argc, char *argv[]) {
+	NSApplication *app = SharedApplication();
+	NSWindow *window = NewWindow(0, 0, 640, 480);
+	SetTitle(window, "Hi");
+	MakeKeyAndOrderFront(window);
+	Run(app);
 	return 0;
 }
